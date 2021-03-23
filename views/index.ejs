@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeList</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <div class="card-title">
+                            <h2>NodeList App</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/tasks" method="POST">
+                            <%- include("./partials/_form_field.ejs") %>
+                        </form>
+                    </div>
+                </div><hr>
+                <div class="card">
+                    <div class="card-body">
+                        <% if(tasks.length > 0){ %> 
+                            <% tasks.forEach((task)=>{ %> 
+                                <div class="task mb-3">
+                                    <button type="submit" id="<%= task.id %>" class="btn btn-sm btn-danger float-right ml-2">x</button>
+                                    <a href="/tasks/edit/<%= task.id %> " class="btn btn-sm btn-primary float-right">edit</a>
+                                    <h6 class="float-left"><%= task.task %></h6>
+                                    <div class="clearfix"></div>
+                                    <small><%= task.createdAt %> </small>
+                                </div>
+                            <% }) %> 
+                        <% }else{ %>
+                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>No Task Available Yet!!!</strong> 
+                            </div>
+                        <% } %> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <script src="/js/Jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+        
+        $(document).ready(function(){
+            $(".btn-danger").click(function(e){
+                var alert = $("strong")
+                var delId = $(this).attr('id')
+                var endpoint = `/tasks/${delId}`;
+                $.ajax({
+                    method: "DELETE",
+                    url: endpoint,
+                    success: (data)=>{
+                        if(data){
+                            $(this).parent().hide(1000)
+                        }
+
+                        if(!data){
+                            $("strong").text("No Task Available Yet!!!")
+                        }
+                    },
+                    error: (err)=>{
+                        if(err){
+                            console.log(err)
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

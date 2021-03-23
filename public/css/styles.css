@@ -1,0 +1,8 @@
+.card{
+    box-shadow: 1px 1px 4px black;
+}
+.task{
+    border: 3px solid #007BFF;
+    padding: 8px;
+    border-radius: 5px;
+}
