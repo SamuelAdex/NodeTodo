@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config()
+}
+
+
 const express = require("express");
 const morgan = require("morgan")
 const mongoose = require("mongoose")
@@ -7,8 +12,9 @@ const methodOverride = require("method-override")
 
 
 let app = express()
-
-mongoose.connect("mongodb://localhost:27017/nodelist", {
+const db = process.env.DATABASE_URL
+//"mongodb://localhost:27017/nodelist"
+mongoose.connect(db, {
   useNewUrlParser: true, 
   useUnifiedTopology: true, 
   useCreateIndex: true
