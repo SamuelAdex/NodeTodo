@@ -2,7 +2,7 @@
   "name": "nodelist",
   "version": "1.0.0",
   "description": "Todo List Using Nodejs",
-  "main": "index.js",
+  "main": "server.js",
   "start": "node server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
