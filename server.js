@@ -13,14 +13,45 @@ const methodOverride = require("method-override")
 
 let app = express()
 const db = process.env.DATABASE_URL
+try {
+  // This configuration is better
+  mongoose.connect(db, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: true,
+  }, err => {
+    if (err) throw err;
+
+    console.log("connected to MongoDB");
+  });
+} catch (error) {
+  console.log(error);
+}
+/* mongoose.connect(
+  db,
+  { useNewUrlParser: true, 
+    useUnifiedTopology: true, 
+    useCreateIndex: true },
+  function (err, res) {
+      try {
+          console.log('Connected to Database');
+      } catch (err) {
+          throw err;
+      }
+}); */
+
+
 //"mongodb://localhost:27017/nodelist"
-mongoose.connect(db, {
+/* mongoose.connect(db, {
   useNewUrlParser: true, 
   useUnifiedTopology: true, 
   useCreateIndex: true
 })
-.then((result)=> console.log("DB Connected"))
-.catch((err)=> console.log("DB Error: "+err))
+const dbs = mongoose.connection
+dbs.on('error', error=> console.error(error))
+dbs.once('open', ()=> console.log("DB Connected :)")) */
+
 
 
 app.set("view engine", "ejs");
@@ -32,7 +63,7 @@ app.use(methodOverride("_method"))
 app.use(morgan("tiny"))
 app.get("/", (req, res)=>{
   
-  Task.find().sort({createdAt: "desc"})
+  Task.find({}).sort({createdAt: "desc"})
   .then((result)=>{
     res.render("index", {tasks: result})
   })
